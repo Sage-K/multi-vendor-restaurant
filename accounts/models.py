@@ -4,6 +4,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 
 # Create your models here.
+
 class UserManager(BaseUserManager):
     def create_user(self,first_name,last_name, username,email, password=None):
         if not email:
@@ -80,6 +81,22 @@ class User(AbstractBaseUser):
 
     def has_module_perms(self, app_label):
         return True
+    
+    def get_role(self):
+        if self.is_superadmin:
+            return "Super Admin"
+        elif self.role == 1:
+            return "Vendor"
+        elif self.role == 2:
+            return "Customer"
+        else:
+            return "Undefined"
+    #def get_role(self):
+    #    if self.role == 1:
+    #        user_role = 'Vendor'
+    #    elif self.role == 2:
+    #        user_role = 'Customer'
+    #    return user_role
 
 
 class UserProfile(models.Model):
